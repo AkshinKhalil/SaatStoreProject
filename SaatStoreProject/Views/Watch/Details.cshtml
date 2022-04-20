@@ -1,0 +1,172 @@
+﻿@model Watch
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section id="watch-details">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ul class="breadcrumb detail_breadcrumb ">
+                        <li class="breadcrumb-item detail-breadcrumb-item"><a asp-controller="home" asp-action="index"><i
+                                    class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item detail-breadcrumb-item">@Model.WatchModel</li>
+                    </ul>
+                </nav>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="detail-title">@Model.WatchModel</h1>
+                    </div>
+                </div>
+                <div class="content_box"></div>
+                <div class="row">
+                    <div id="content" class="col-12">
+                        <div class="watch-details">
+                            <div class="watch-details-top d-flex">
+                                <div class="watch-details-left">
+                                    <div class="mainslider">
+                                        <div class="slider slider-for">
+                                            <div><a class="additional-gallery-item active" tabindex="0" data-slide="1">
+                                                    <img src="~/assets/images/watch/@Model.WatchImages.FirstOrDefault(i=>i.isMain == true).Image"
+                                                      class="img_class" alt="@Model.WatchModel"></a></div>
+                                            @foreach (WatchImage image in Model.WatchImages.Where(i=>i.isMain ==false))
+                    {
+                                             <div><a class="additional-gallery-item" tabindex="0" data-slide="2">
+                                                    <img src="~/assets/images/watch/@image.Image"
+                                                    class="img_class"  alt="@Model.WatchModel">
+                                                </a></div>    
+                    }          
+                                        </div>
+                                        <div class="slider slider-nav">
+                                            <div><a class="additional-gallery-item active" tabindex="0" data-slide="1">
+                                                    <img width=100px class="img_navslider" src="~/assets/images/watch/@Model.WatchImages.FirstOrDefault(i=>i.isMain == true).Image"
+                                                         alt="@Model.WatchModel"></a></div>
+                                    @foreach (WatchImage image in Model.WatchImages.Where(i=>i.isMain == false))
+                                    {
+                                       <div><a class="additional-gallery-item" tabindex="0" data-slide="2">
+                                                    <img width=100px  class="img_navslider" src="~/assets/images/watch/@image.Image"
+                                                         alt="@Model.WatchModel">
+                                                </a></div>  
+                                    }                                   
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="watch-details-right d-flex flex-column">
+                                    <div class="watch-details-info order-1">
+                                        <ul class="watch-details-info-list list-unstyled">
+                                            <li class="watch-details-info-item watch-details-info-item-manufacturer">Brend: @Model.Brand.Name</li>
+                                            <li class="watch-details-info-item watch-details-info-item-model">Model:
+                                                <span class="watch-details-info-code">@Model.WatchModel</span>
+                                            </li>
+                                            <li class="watch-details-info-item watch-details-info-item-stock">Mövcudluq:
+                                                <span class="watch-details-info-is" style="color:@(Model.InStock ? " green" : "red")">@(Model.InStock ? " Anbarda" : "Yoxdur") </span>
+                                            </li>
+                                        </ul>
+                                        <div
+                                            class="watch-pricebox  d-flex align-items-center">
+                                            <div class="watch-price">@Model.Price AZN</div>
+                                        </div>
+                                    </div>
+                                    <div class="watch-details-attr order-3 order-md-2">
+                                        <div
+                                            class="watch-details-attr-top d-flex justify-content-between align-items-center">
+                                            <div class="watch-details-attr-title">Əsas xüsusiyyətləri:</div>
+                                            <a  onclick="scrollTomenu()" class="scrolltomenuu">Bütün xüsusiyyətləri</a>                                            
+                                        </div>
+                                        <div class="watch-details-attr-cont">
+                                            <div class="watch-details-attr-item d-flex justify-content-between">
+                                                <span class="span1">Kateqoriya:</span>
+                                                <span class="span2">@foreach (WatchCategory wCategory in Model.WatchCategory)
+                                {
+                                    @wCategory.Category.Name
+                                }</span>
+                                            </div>
+                                            <div class="watch-details-attr-item d-flex justify-content-between">
+                                                <span class="span1">Korpus ölçüsü:</span>
+                                                <span class="span2">@Model.CaseThickness</span>
+                                            </div>
+                                            <div class="watch-details-attr-item d-flex justify-content-between">
+                                                <span class="span1">Mexanizm:</span>
+                                                <span class="span2">@Model.Mechanism</span>
+                                            </div>
+                                            <div class="watch-details-attr-item d-flex justify-content-between">
+                                                <span class="span1">Su keçirməzlik:</span>
+                                                <span class="span2">@Model.WaterProtection</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="product"
+                                        class="watch-details-action d-lg-flex justify-content-between order-2 order-md-3">
+                                        <div class="watch-details-action-left">
+                                            <div class="watch-details-quantity">
+                                                <label class="control-label product-quantity-label"
+                                                    for="input-quantity">Sayı:</label>
+                                                <div class="btn-group watch-details-quantity" role="group">
+                                                    <input type="text" class="form-control" name="quantity" value="1"
+                                                        id="input-quantity">
+                                                    <input type="hidden" name="product_id" value="9000">
+                                                </div>
+                                            </div>
+                                             <button type="button" id="button-cart" 
+                                                class="watch-details-btn watch-details-btn-active"><a style="text-decoration:none;color:white" asp-controller="watch" asp-action="addbasket" asp-route-id="@Model.Id">Səbətə at</a></button>
+                                        
+                                            @*<button class="add-to-cart">
+    <div class="cart">
+        <svg viewBox="0 0 24 19">
+            <path d="M11.25 17C11.25 17.6904 10.6904 18.25 10 18.25C9.30964 18.25 8.75 17.6904 8.75 17C8.75 16.3096 9.30964 15.75 10 15.75C10.6904 15.75 11.25 16.3096 11.25 17Z" stroke-width="1.5 "/>
+            <path d="M19.25 17C19.25 17.6904 18.6904 18.25 18 18.25C17.3096 18.25 16.75 17.6904 16.75 17C16.75 16.3096 17.3096 15.75 18 15.75C18.6904 15.75 19.25 16.3096 19.25 17Z" stroke-width="1.5 "/>
+            <path d="M1 1H5L5.91304 4M5.91304 4L8.06853 11.0823C8.32483 11.9245 9.10161 12.5 9.98188 12.5H18.585C19.4329 12.5 20.1887 11.9653 20.471 11.1656L23 4H5.91304Z" stroke-width="2" />
+        </svg>
+        <img srcset="https://assets.codepen.io/165585/alge.png 1x, https://assets.codepen.io/165585/alge@2x.png 2x" />
+    </div>
+    <span>Add to cart</span>
+    <div class="check">
+        <svg viewBox="0 0 10 10">
+            <path d="M2 5L4 7L8 3" />
+        </svg>
+    </div>
+    <svg class="background" viewBox="0 0 142 46">
+        <path d="M0 19C0 10.7157 6.71573 4 15 4H41.4599C53.6032 4 62.4844 4 72.5547 4C82.6251 4 91.5063 4 103.65 4H137C139.761 4 142 6.23858 142 9V31C142 39.2843 135.284 46 127 46H5C2.23858 46 0 43.7614 0 41V19Z" />
+    </svg>
+</button>*@
+
+</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="watch-details-attributes"  class="watch-details-attributes">
+                                <div class="watch-details-attributes-cont">
+                                    <div class="watch-details-attributes-title">Xüsusiyyətlər:</div>
+                                    <div class="watch-details-attr-item d-flex justify-content-between">
+                                        <span class="span_left">Kateqoriya</span>
+                                        <span class="span_right">
+                                            @foreach (WatchCategory wCategory in Model.WatchCategory)
+                                {
+                                    @wCategory.Category.Name
+                                }
+                                          </span>
+                                    </div>
+                                    <div class="watch-details-attr-item d-flex justify-content-between">
+                                        <span class="span_left">Korpus ölçüsü</span>
+                                        <span class="span_right">@Model.CaseThickness</span>
+                                    </div>
+                                    <div class="watch-details-attr-item d-flex justify-content-between">
+                                        <span class="span_left">Mexanizm</span>
+                                        <span class="span_right">@Model.Mechanism</span>
+                                    </div>
+                                    <div class="watch-details-attr-item d-flex justify-content-between">
+                                        <span class="span_left">Su keçirməzlik</span>
+                                        <span class="span_right">@Model.WaterProtection</span>
+                                    </div>
+                                    <div class="watch-details-attr-item d-flex justify-content-between">
+                                        <span class="span_left">Şüşə</span>
+                                        <span class="span_right">@Model.Glass</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+ </section>

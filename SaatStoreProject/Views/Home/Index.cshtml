@@ -1,0 +1,255 @@
+﻿@model HomeVM
+@{
+    ViewData["Title"] = "Index";
+}
+@if (TempData["Succeeded"] != null)
+{
+    <input type="hidden" id="toastrJs" data-succeed="@TempData["Succeeded"]" />
+}
+
+@if (TempData["Verify"] != null)
+{
+    <input type="hidden" id="verifyJS" />
+}
+
+
+@if (TempData["Verified"] != null)
+{
+    <input type="hidden" id="verifiedJS" />
+}
+        <section id="section1Slider">
+            <div class="container ">
+                <div class="row d-flex justify-content-center align-items-center">
+                    <div class="slider col-12">
+                        <div class="sliderInner">
+                            <div class="slickslider">
+                                @foreach (Slider slider in Model.Sliders)
+                                {
+                                    <div class="slidercontent text-center">
+                                    <div class="slideitem row d-flex justify-content-between align-items-center">
+                                        <div class="slider-title-info col-12 col-lg-8 col-md-8 col-sm-12">
+                                            <p class="slider-title">@slider.Title </p>
+                                            <p class="slider-text">@slider.SubTitle</p>
+                                            <a href="" class="slider-btn">Ətraflı</a>
+                                        </div>
+                                        <div class="image col-12 col-lg-4 col-md-4 col-sm-12">
+                                            <img class="sliderimage" src="~/assets/images/index/@slider.Image" alt="swiss">
+                                        </div>
+                                    </div>
+                                </div>
+                                } 
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+         </section>  
+         
+        <section id="section3EnCoxSatilanlar" class="section3EnCoxSatilanlar">
+            <div class="container">
+                <div class="row row-padding-top">
+                    <div class="col-lg-12">
+                        <div class="title"><a href="">Xüsusi saatlar</a>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row box_coxsatilan">  
+                    @await Html.PartialAsync("_WatchPartialView",Model.Watches.Where(w => w.Price>100));                     
+                </div>
+            </div>
+        </section>       
+
+        <section id="section5KishiSaatlari">
+            <div class="container">
+                <div class="row row-padding-top">
+                    <div class="col-lg-12">
+                        <div class="title"><a href="">Kişi saatları</a>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="row box_coxsatilan">
+                     @await Html.PartialAsync("_WatchPartialView",Model.Watches.Where(w => w.WatchCategory.Any(wt => wt.Category.Name == "Kişi"))); 
+                     
+                </div>
+            </div>
+        </section>
+
+        <section id="section6QadinSaatlari">
+            <div class="container">
+                <div class="row row-padding-top">
+                    <div class="col-lg-12">
+                        <div class="title"><a href="">Qadın saatları</a>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="row box_coxsatilan">
+                    @await Html.PartialAsync("_WatchPartialView",Model.Watches.Where(w=>w.WatchCategory.Any(wt=>wt.Category.Name=="Qadın")));
+            </div>
+            </div>
+        </section>
+
+        <section id="section7Alishqanlar">
+            <div class="container">
+                <div class="row row-padding-top">
+                    <div class="col-lg-12">
+                        <div class="title"><a href="">Uniseks saatlar</a>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="row box_coxsatilan">
+                     @await Html.PartialAsync("_WatchPartialView",Model.Watches.Where(w=>w.WatchCategory.Any(wt=>wt.Category.Name=="Uniseks")));
+                 </div>
+            </div>
+        </section>
+
+         <section id="section4XususiTeklif">
+            <div class="container">
+                <div class="row row-padding-top">
+                    <div class="col-lg-12">
+                        <div class="title"><a href="">Uşaq saatları</a>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+                <div class="row box_coxsatilan">
+                     @await Html.PartialAsync("_WatchPartialView",Model.Watches.Where(w => w.WatchCategory.Any(wt => wt.Category.Name == "Uşaq")));
+                    </div>
+            </div>
+        </section>
+
+        <section id="section8Bloqlar">
+            <div class="container">
+                <div class="row row-padding-top">
+                    <div class="col-lg-12">
+                        <div class="title">Bloq
+                            <hr>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="" class="row">
+            @foreach (Blog blog in Model.Blogs)
+            {
+              <div class="col-lg-4 col-md-12 col-sm-12 col-12 blog-item">
+                        <div class="blog-box h-100 d-flex flex-column">
+                            <div class="blog-photo">
+                                <div class="blog-date">
+                                    @blog.StartDate.ToShortDateString()
+                                </div>
+                                <a  asp-controller="blog" asp-action="details" asp-route-id="@blog.Id" title="@blog.Name" class="h-100 w-100">
+                                    <img src="~/assets/images/blog/@blog.Image" sizes="100vw" class="w-100 oct-lazy" alt="@blog.Name" data-loaded="true">
+                                </a>
+                            </div>
+                            <div class="blog-content d-flex flex-column justify-content-start h-100">
+                                <a style="text-decoration:none; font-size: 20px;" asp-controller="blog" asp-action="details" asp-route-id="@blog.Id" class="blog-title">@blog.Name</a>
+                                <div class="blog-text" style="font-size: 18px;">
+                                    @if (@blog.Description.Length > 105)
+                                                {
+                                                    <p>@blog.Description.Substring(0, 105)...</p>
+                                                }
+                                                else
+                                                {
+                                                   <p>@blog.Description</p>
+                                                } 
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+            }            
+                </div>
+            </div>
+        </section>
+
+        @section Scripts{
+    <script>
+        $(document).ready(function () {
+            if ($("#toastrJs").length) {
+                if ($("#toastrJs").attr("data-succeed").toLowerCase() == "true") {
+                    Command: toastr["success"]("Sifarişiniz uğurla yaradıldı")
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                } else {
+                    Command: toastr["error"]("Səbət boşdur")
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": false,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    }
+                }
+            }
+            if ($("#verifyJS").length) {
+                Command: toastr["success"]("Zəhmət olmasa e-poçtunuzu doğrulayın")
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "7000",
+                    "extendedTimeOut": "2000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+            if ($("#verifiedJS").length) {
+                Command: toastr["success"]("E-poçtunuz təsdiqləndi")
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "7000",
+                    "extendedTimeOut": "2000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                }
+            }
+        })
+    </script>
+}

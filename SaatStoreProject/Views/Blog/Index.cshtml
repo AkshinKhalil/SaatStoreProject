@@ -1,0 +1,53 @@
+﻿@model BlogVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section id="blogs">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ul class="breadcrumb blog-breadcrumb">
+                        <li class="breadcrumb-item blog-breadcrumb-item"><a asp-controller="home" asp-action="index">
+                            <i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item blog-breadcrumb-item">Xəbərlər</li>
+                    </ul>
+                </nav>
+
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="blog-title">Xəbərlər</h1>
+                    </div>
+                </div>
+                <div class="contenhr"></div>              
+                <div id="" class="row blog-boxes">
+            @foreach (Blog blog in Model.Blogs)
+            {
+              <div class="col-lg-4 col-md-12 col-sm-12 col-12 blog-item">
+                        <div class="blog-box h-100 d-flex flex-column">
+                            <div class="blog-photo">
+                                <div class="blog-date">@blog.StartDate.ToShortDateString()</div>
+                                <a asp-controller="blog" asp-action="details" asp-route-id="@blog.Id" title="@blog.Name" class="h-100 w-100">
+                                    <img src="~/assets/images/blog/@blog.Image" sizes="100vw" class="w-100 oct-lazy" alt="@blog.Name" >
+                                </a>
+                            </div>
+                            <div class="blog-content d-flex flex-column justify-content-start h-100">
+                                <a style="text-decoration:none" asp-controller="blog" asp-action="details" asp-route-id="@blog.Id" class="blog-title">@blog.Name
+                                </a>
+                                <div class="blog-text" style="font-size: 18px;">
+                                    @if (@blog.Description.Length > 105)
+                                                {
+                                                    <p>@blog.Description.Substring(0, 105)...</p>
+                                                }
+                                                else
+                                                {
+                                                   <p>@blog.Description</p>
+                                                } 
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+            }            
+                </div>
+            </div>
+        </section>
+

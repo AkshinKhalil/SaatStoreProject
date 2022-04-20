@@ -1,0 +1,204 @@
+﻿@model WatchVM
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section id="watch">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ul class="breadcrumb blog-breadcrumb">
+                        <li class="breadcrumb-item blog-breadcrumb-item"><a asp-controller="home" asp-action="index"><i
+                                    class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item blog-breadcrumb-item">Saatlar </li>
+                    </ul>
+                </nav>
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="blog-title">Saatlar</h1>
+                    </div>
+                </div>
+                <div class="contenhr"></div>
+
+                <div class="watch_filterr">
+                    <div class="row">
+                        <aside class="left_side col-lg-3 col-md-5">
+                            <div class="w-container" id="">
+                                <div class="watch_leftside">
+                                    <div class="watch_top">
+                                        Məhsul filtri
+                                    </div>
+                                    <div class="watch_body">
+                                        <div class=" watch_mehsul_filteri">
+                                            <div class="watch_filter" id="Brend">
+                                                <div class="watch_filter-body">
+                                                    <div class="watch_filter-header">
+                                                        <span class="watch_filter-name">Brend</span>
+                                                    </div>
+                                                    <div class="watch_filter_items">
+                                                        <div class="watch_filter_items-body">
+                                                             @foreach (Brand brand in Model.Brands)
+                                                    {
+                                                        if (brand.Watch.Count > 0)
+                                                        {                                                            
+                                                                <button type="button" class="watch_filter_value">
+                                                                <span class="watch_filter_value-image" style="background-image: url(assets/images/brand/@brand.Image);"></span>
+
+                                                                <span class="watch_filter_value-name"><a style="text-decoration:none" asp-controller="watch" asp-action="index" asp-route-sortid="@brand.Id">@brand.Name.ToUpper()</a></span>
+                                                                <span class="watch_filter_value-append">
+                                                                    <span class="watch_filter_value-count">@brand.Watch.Count()</span>
+                                                                </span>
+                                                            </button>
+                                                        }else{
+                                                             <button type="button" class="watch_filter_value">
+                                                                <span class="watch_filter_value-image" style="background-image: url(assets/images/brand/@brand.Image);"></span>
+
+                                                                <span class="watch_filter_value-name"><a style="pointer-events:none;cursor:default; text-decoration:none"  asp-controller="watch" asp-action="index" asp-route-sortid="@brand.Id">@brand.Name.ToUpper()</a></span>
+                                                                <span class="watch_filter_value-append">
+                                                                    <span class="watch_filter_value-count">@brand.Watch.Count()</span>
+                                                                </span>
+                                                            </button>
+                                                        }
+                                                    }                                                           
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                          <div class="watch_filter" id="Qiymet">
+                                                <div class="watch_filter-body">
+                                                    <div class="watch_filter-header">
+                                                        <span class="watch_filter-name">Qiymət</span>
+                                                    </div>
+                                                    <div class="watch_filter_items">
+                                                        <div class="watch_cost">
+                                                            @using (Html.BeginForm("Index", "Watch", FormMethod.Post, new { style = "", @class = "myClass"  }))
+{                                                           <div class="boxxx" style="display: flex;">
+                                                            <input type="tel" name="min_value" value="" placeholder="min" class="watch_cost_MinMax" id="min_value" autocomplete="off">
+                                                            <span style="width: 18%;margin-left: 1px;" class="watch_cost-txt">-</span>
+                                                            <input type="tel" name="max_value" value="" placeholder="max" class="watch_cost_MinMax" id="max_value" autocomplete="off">
+                                                         <span class="watch_cost-txt" style="width: 23%;margin-left: 1px;">AZN</span>    
+                                                        </div>
+                                                            <div class="boxsubmit">
+                                                                <input style="background-color: #6a7275; color:white;font-size: 14px; font-size: 14px;padding-top: 9px; padding-bottom: 9px; margin-top: 15px; width: 100%;" type="submit" value="OK" />
+                                                                </div>
+                                                            }                                                                                                                      
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                        <div class="w-products col-lg-9 col-md-7 ">
+                            <div class="responsivButton sticky-top">
+                                <div class="responsbtnbox">
+                                    <button type="button" class="buttonn w-100 d-block">
+                                        <i class="fa fa-filter"></i> Məhsul filtri </button>
+                                </div>
+                            </div>
+                           
+                                @using (Html.BeginForm("Index", "Watch", FormMethod.Post, new { style = "", @class = "myClass"  }))
+{
+                              <div class="watch_sorting_box d-flex justify-content-between" id="getvalue">
+                                <select id="selectBox" onchange="changeFunc();">
+                                 <option value="1">Ad (A - Z)</option>
+                                 <option value="2">Ad (Z - A)</option>
+                                 <option value="3">Qiymət (Aşağıdan &gt; Yuxarıya)</option>
+                                 <option value="4">Qiymət (Yuxarıdan &gt; Aşağıya)</option>
+                                </select>
+                              </div>
+                                }   
+                            <div class="watches row">
+                        @foreach (Watch watch in Model.Watches)
+                        {
+                          <div class="watchbigbox col-12">
+                                    <div class="watchbox  d-flex flex-column flex-lg-row align-items-center">
+                                        <div class="watch-image">
+                                            <a asp-controller="watch" asp-action="details" asp-route-id="@watch.Id">
+                                                <img src="~/assets/images/watch/@watch.WatchImages.FirstOrDefault(i=>i.isMain == true).Image"
+                                                    sizes="100vw" alt="@watch.Brand.Name" title="@watch.Brand.Name"
+                                                    data-loaded="true">
+                                            </a>
+                                        </div>
+                                        <div class="watch-content-box d-flex flex-column">
+                                            <div class="watch-title">
+                                                <a asp-controller="watch" asp-action="details" asp-route-id="@watch.Id" >@watch.Brand.Name</a>
+                                            </div>
+                                            <div class="watch-code">Məhsul kodu: @watch.WatchModel</div>
+                                            <div class="watch-price-box">
+                                                <span class="watch-price">@watch.Price AZN</span>
+                                            </div>
+                                            <div class="watch-count-box mt-auto">
+                                                <div class="btn-group watch-count" role="group">
+                                                    <input type="text" class="form-control" name="quantity" value="1">
+                                                </div>
+                                                <button class="watch-basket button-cart ">
+                                                <a asp-controller="watch" asp-action="addbasket" asp-route-id="@watch.Id"
+                                                 style="text-decoration:none;color:white">Səbətə at</a>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>  
+                        }                        
+                            </div>
+                             <div class="container">
+    <div class="row justify-content-center">
+        <nav aria-label="...">
+            <ul class="pagination" style="justify-content:center">
+                @if (ViewBag.CurrentPage == 1)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" asp-controller="watch" asp-action="index" asp-route-page="@(ViewBag.CurrentPage - 1)">Geriyə</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item ">
+                        <a class="page-link" asp-controller="watch" asp-action="index" asp-route-page="@(ViewBag.CurrentPage - 1)">Geriyə</a>
+                    </li>
+                }
+                @for (int i = 1; i <= ViewBag.TotalPage; i++)
+                {
+                    <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")" style="@(ViewBag.CurrentPage == i ? "pointer-events:none" : "")">
+                        <a asp-controller="watch" asp-action="index" asp-route-page="@i" class="page-link">@i</a></li>
+                }
+
+                @if (ViewBag.CurrentPage == ViewBag.TotalPage)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" asp-controller="watch" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage)">Növbəti</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" asp-controller="watch" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage+1)">Növbəti</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <script type="text/javascript">
+   function changeFunc() {
+    var selectBox = document.getElementById("selectBox");
+    var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+    location.href = '/watch?selectBox=' + selectedValue;
+   }
+
+  </script>
+
+
+
+ 

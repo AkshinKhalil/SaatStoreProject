@@ -1,0 +1,23 @@
+﻿ @foreach (Watch watch in Model)
+            {
+              <div class="col-6 col-lg-4 col-xl-3 blog-item">
+                        <div class="box_item d-flex flex-column">
+                            <div class="item_image">
+                                <a asp-controller="watch" asp-action="details" asp-route-id="@watch.Id" title="@watch.WatchModel">
+                                    <img src="~/assets/images/watch/@watch.WatchImages.FirstOrDefault(i=>i.isMain == true).Image"
+                                        sizes="100vw" class="img-fluid oct-lazy" alt="@watch.WatchModel" data-loaded="true">
+                                </a>
+                            </div>
+                            <div class="item_title flex-grow-1">
+                                <a asp-controller="watch" asp-action="details" asp-route-id="@watch.Id">@watch.WatchModel</a>
+                            </div>
+                            <div class="item_price ">
+                                <span class="spanprice ">@watch.Price AZN</span>
+                            </div>
+                            <a asp-controller="watch" asp-action="addbasket" asp-route-id="@watch.Id"
+                               style="text-decoration:none;color:white" class="item_cartbtn button-cart">Səbətə at</a>
+                        </div>
+                    </div>   
+            }
+
+            

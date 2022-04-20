@@ -1,0 +1,359 @@
+﻿@inject SaatStoreProject.Services.LayoutServices layoutService
+@{ 
+    BasketVM basket = await layoutService.ShowBasket();
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Çoxillik təcrübəyə və saat sənayesinin mükəmməl biliyi sayəsində SaatStore öz müştərilərinə tanınmış dünya istehsalçılarından yalnız orijinal saatlar təqdim edir.
+SaatStore brendi olaraq biz saat sektorunda olan yenilikləri daima izləyirik və müasir trendlərə əsasən yeni kolleksiyalar ilə çeşidlərimizi mütəmadi artırırıq. 
+Müştərilərimiz üçün dinamik  endirimlər sistemi , müxtəlif promo aksiyalar və xüsusi təkliflər mövcuddur!">
+    <title>Saat Store</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
+        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+        integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+        integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+    @RenderSection("CSS", required: false)
+    <link rel="stylesheet" href="~/assets/scss/slick.css">
+    <link rel="stylesheet" href="~/assets/scss/slick-theme.css">
+    <link rel="stylesheet" href="~/assets/scss/style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="row align-items-center">
+                <div id="logo" class="logo-box col-6 col-lg-3 col-md-3 col  text-center">
+                    <a asp-controller="home" asp-action="index" >
+                        <img class="logoclass" src="~/assets/images/index/@layoutService.getSettingDatas().Logo" title="Saat Store"
+                            alt="Saat Store">
+                    </a>
+                </div>
+
+                <div class="search-box col-6 col-lg-5 col-md-6 ">
+                    <div id="search" class="input-group header-input-group">
+                        <form asp-controller="watch" asp-action="index" style="width: 100%;    display: flex;">
+                            <div class="col-lg-9">
+                                 <input style="width: 100%;" type="text" id="searchwatchName" name="searchwatchName"  placeholder="Axtar"
+                            class="h-100 header-input">
+                            </div>
+                            <div class="col-lg-3">
+ <button type="button" class="btn btn-search header-btn-search h-100">@Html.Raw(@layoutService.getSettingDatas().SearchIcon)</button>
+                    </div>
+                    </form>
+                      </div>
+                </div>
+
+                <div class="phone-box col-6 col-lg-2 col-md-3  d-flex align-items-center">
+                    <div class="phone-img">
+                        <img src="~/assets/images/index/pnone-icon.svg" alt="phone-icon">
+                    </div>
+                    <div class="phone-number">
+                        <a ><span>+994 @layoutService.getSettingDatas().Connectnumber</span></a>
+                    </div>
+                </div>
+
+                <div class="login-box col-3 col-lg-1  d-flex align-items-center">
+                    @if (!User.Identity.IsAuthenticated)
+                                {                                    
+                                        <a class="accountlink" asp-controller="account" asp-action="login">Login</a>
+                                        <a class="accountlink" asp-controller="account" asp-action="register">Register</a>
+                                }
+                                else
+                                {
+                                        <a class="accountlink" asp-controller="account" asp-action="edit">@User.Identity.Name</a>
+                                        <a class="accountlink" asp-controller="account" asp-action="logout">Logout</a>
+                                }
+                </div>
+
+                <div id=" " class="cart-box col-3 col-lg-1  d-flex align-items-center justify-content-end">
+                    <img class="cart_img" src="~/assets/images/index/@layoutService.getSettingDatas().BasketIcon" alt="cart-icon">
+                    <span class="header-cart-index">@basket.Count</span>
+                    <div class="us-cart-content">
+                        <p class="us-cart-text">
+                            @basket.TotalPrice AZN
+                        </p>
+                    </div>
+                <div class="basketList">
+                                    <div class="listProducts">   
+                                         @foreach (var item in basket.BasketItems)
+                                         {
+                                            <div class="product">
+                                                <div class="image">
+                                                     <img src="~/assets/images/watch/@item.Watch.WatchImages.FirstOrDefault(i=>i.isMain == true).Image"
+                                                    sizes="40vw" alt="@item.Watch.Brand.Name" title="@item.Watch.Brand.Name">
+                                                </div>
+                                                <div>
+                                                    <p class="product-name">@item.Watch.Brand.Name</p>
+                                                    <p>
+                                                        <span class="product-count">@item.Count </span>
+                                                        X
+                                                        <span class="product-price">@item.Price Azn</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <div>
+                                                        <button class="btn-product-delete"  >
+                                                            <a asp-controller="watch" asp-action="RemoveFromCart" asp-route-Removeid="@item.Watch.Id" style="color:red">X</a></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                    </div>
+
+                                    <div class="price-buttons">
+                                        <div class="totalPrice">
+                                            <div class="totalText">
+                                                <span>Ümumi:</span>
+                                            </div>
+                                            <div class="priceText">                                                
+                                                <span>@basket.TotalPrice</span>
+                                                <span> AZN</span>
+                                            </div>
+                                        </div>
+                                        <div class="viewCart-checkOut">
+                                            <a class="checkOutBox" asp-controller="Order" asp-action="Checkout">
+                                                <span>Sifariş et</span>
+                                            </a>
+                                        </div>
+                                    </div>                              
+                                    </div>                
+                </div>     
+            </div>
+        </div>
+    </header>
+    <div class="menu-row sticky-top">
+        <div class="container">
+            <div class="row">
+                <div id="w_stickybar" class="col-lg-3">
+                    <div class="watch_menu d-flex align-items-center justify-content-center">
+                        <i class="fas fa-bars"></i> <span> Bütün kateqoriyalar</span>
+                    </div>
+                    <nav id="watch-menu-dropdown">
+                        <ul class="list-unstyled">
+                            @foreach (Category category in layoutService.getCategoryDatas())
+                            {
+                             <li class="watch-menu-li"><a asp-controller="watch" asp-action="index" asp-route-categoryId="@category.Id">
+                                    <span class=" menu_item_name">@category.Name</span></a></li>   
+                            } 
+                        </ul>
+                    </nav>
+                </div>
+                <div class="menu_boxx col-lg-4">
+                    <nav class="navbar">
+                        <ul class="nav navbar-nav flex-row">
+                            <li class="brands">
+                                <a asp-controller="" asp-action="" >Brendlər<i class="fas fa-chevron-down"></i></a>
+                                <div class="brands_box brands_box-2">
+                                    <div class="brands_name_box">
+                                        <ul class="list-unstyled">
+                                                @foreach (Brand brand in layoutService.getBrandDatas())
+                                                {
+                                                   <li class="watch-menu-li"> <a asp-controller="watch" asp-action="index" asp-route-sortid="@brand.Id"> <span class=" menu_item_name">@brand.Name</span></a>
+                                                    </li>  
+                                                }                                               
+                                           
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="brands brands_header">
+                                <a asp-controller="watch" asp-action="index">Saatlar</a>
+                            </li>
+                            <li class="brands brands_header">
+                                <a asp-controller="info" asp-action="index">İnformasiya</a>
+                            </li>
+                            <li class="brands watch_link">
+                                <a asp-controller="blog" asp-action="index">Xəbərlər</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <nav id="top" >
+        <div class="container d-flex h-100">
+            <div id="w_stickybar" class="col-lg-3">
+                    <div class="watch_menu d-flex align-items-center justify-content-center">
+                        <i class="fas fa-bars"></i> <span> Bütün kateqoriyalar</span>
+                    </div>
+                    <nav id="watch-menu-dropdown">
+                        <ul class="list-unstyled">
+                         @foreach (Category category in layoutService.getCategoryDatas())
+                            {
+                             <li class="watch-menu-li"><a asp-controller="watch" asp-action="index" asp-route-Categoryid="@category.Id">
+                                    <span class=" menu_item_name">@category.Name</span></a></li>   
+                            }
+                            </ul>
+                    </nav>
+                </div>
+                <div class="login-box col-3 col-lg-1  d-flex align-items-center">
+                      @if (!User.Identity.IsAuthenticated)
+                                {                                    
+                                        <a class="accountlink" asp-controller="account" asp-action="login">Login</a>
+                                        <a class="accountlink" asp-controller="account" asp-action="register">Register</a>
+                                }
+                                else
+                                {
+                                        <a class="accountlink" asp-controller="account" asp-action="edit">@User.Identity.Name</a>
+                                        <a class="accountlink" asp-controller="account" asp-action="logout">Logout</a>
+                                }
+                </div>
+                <div id="cart" class="cart-box col-3 col-lg-1  d-flex align-items-center justify-content-end">
+                    <img class="cart_img" src="~/assets/images/index/@layoutService.getSettingDatas().BasketIcon" alt="cart-icon">
+                    <span class="header-cart-index">@basket.Count</span>
+                    <div class="us-cart-content">
+                        <p class="us-cart-text">
+                            @basket.TotalPrice AZN
+                        </p>
+                    </div>
+                    <div class="basketList">
+                                    <div class="listProducts">   
+                                         @foreach (var item in basket.BasketItems)
+                                         {
+                                            <div class="product">
+                                                <div class="image">
+                                                    <img src="~/assets/images/watch/@item.Watch.WatchImages.FirstOrDefault(i=>i.isMain == true).Image"
+                                                    sizes="40vw" alt="@item.Watch.Brand.Name" title="@item.Watch.Brand.Name">
+                                                </div>
+                                                <div>
+                                                    <p class="product-name">@item.Watch.Brand.Name</p>
+                                                    <p>
+                                                        <span class="product-count">@item.Count </span>
+                                                        X
+                                                        <span class="product-price">@item.Price Azn</span>
+                                                    </p>
+                                                </div>
+                                                <div>
+                                                    <div>
+                                                        <button class="btn-product-delete" ><a asp-controller="watch" asp-action="RemoveFromCart" asp-route-Removeid="@item.Watch.Id" style="color:red">x</a></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            }
+                                    </div>
+
+                                    <div class="price-buttons">
+                                        <div class="totalPrice">
+                                            <div class="totalText">
+                                                <span>Ümumi:</span>
+                                            </div>
+                                            <div class="priceText">
+                                                <span>@basket.TotalPrice</span>
+                                                <span> AZN</span>                                                
+                                            </div>
+                                        </div>
+                                        <div class="viewCart-checkOut">
+                                            <a class="checkOutBox" asp-controller="Order" asp-action="Checkout">
+                                                <span>Sifariş et</span>
+                                            </a>
+                                        </div>
+                                    </div>                              
+                                    </div>
+                </div>
+
+        </div>
+    </nav>  
+
+        <main>
+            @RenderBody()
+        </main>
+
+        <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 f_top_box">
+                    <div class="f_title">Məlumat<i class="fas fa-chevron-down d-md-none"></i></div>
+                    <ul class="f_list  list-unstyled">
+                        <li class="f-item "><a href="" class="f-link"></a></li>
+                        <li class="f-item "><a asp-controller="info" asp-action="index" class="f-link">Əlaqə</a></li>
+                        <li class="f-item "><a href="" class="f-link">Geri qaytarma</a></li>
+                        <li class="f-item "><a asp-controller="blog" asp-action="index" class="f-link">Bloglar</a></li>
+                        <li class="f-item "><a href="" class="f-link">Hədiyyə kartları</a></li>
+                        <li class="f-item "><a asp-controller="watch" asp-action="index" class="f-link">Saatlar</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 f_top_box">
+                    <div class="f_title">Kateqoriyalar<i class="fas fa-chevron-down d-md-none"></i></div>
+                    <ul class="f_list  list-unstyled mb-0">
+                        @foreach (Category category in layoutService.getCategoryDatas())
+                        {
+                             <li class="f-item"><a asp-controller="watch" asp-action="index" asp-route-categoryId="@category.Id"
+                                class="f-link">@category.Name</a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 f_top_box social_box">
+                    <div class="f_title">İş vaxtı</div>
+                    <div class="f_list">
+                        <div class="f-time-iconbox d-flex align-items-center">
+                            <div class="footer-time_icon">
+                                <img src="assets/images/index/@layoutService.getSettingDatas().LoginIcon" alt="">
+                            </div>
+                            <ul class="list-unstyled mb-0">
+                                <li>Hər gün 10:00 - 20:00
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div class="f-social">
+                        <div class="f-social-text f-socialtext">Biz sosial şəbəkələrdə:</div>
+                        <ul class="f-sociallist d-flex list-unstyled">
+                            <li class="f-socialitem"><a rel="nofollow" href="@layoutService.getSettingDatas().FacebookIcon"
+                                    class="f-sociallink " target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                            <li class="f-socialitem"><a rel="nofollow" href="@layoutService.getSettingDatas().TwitIcon"
+                                    class="f-sociallink " target="_blank"><i class="fab fa-twitter"></i></a></li>
+                            <li class="f-socialitem"><a rel="nofollow" href="@layoutService.getSettingDatas().InstagramIcon"
+                                    class="f-sociallink " target="_blank"><i class="fab fa-instagram"></i></a></li>
+                            <li class="f-socialitem"><a rel="nofollow" href="@layoutService.getSettingDatas().VideoURL"
+                                    class="f-sociallink " target="_blank"><i class="fab fa-youtube"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 f_top_box">
+                    <div class="f_title">Bizimlə əlaqə<i class="fas fa-chevron-down d-md-none"></i></div>
+                    <div class="f_list">
+                        <a class="btn f_phone d-flex align-items-center">+994 @layoutService.getSettingDatas().Connectnumber</a>
+                        <a href="" class="f_mail">order@saatstore.az</a>
+                        <div class="f_address">Ünvan: 28 may Fikrət Əmirov 24 (Perron Gallery 2nd floor)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row f_bottom_box">
+                <div class="col-lg-12">
+                    <div class="f-bottom d-flex justify-content-between">
+                        <div class="f-link"><a href="https://code.edu.az/" title="CodeAcademy veb studio"
+                                alt="saytlarin hazirlanmasi">CodeAcademy Veb Studiyası</a><br> Saat Store © 2022</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+@RenderSection("Scripts", required: false)
+<script src="~/assets/js/slick.min.js"></script>
+<script src="~/assets/js/script.js"></script>
+
+</html>

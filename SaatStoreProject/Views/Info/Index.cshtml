@@ -1,0 +1,43 @@
+﻿@inject SaatStoreProject.Services.LayoutServices layoutService
+@{
+    ViewData["Title"] = "Index";
+}
+
+ <section id="info_watch">
+            <div class="container ">
+                <nav aria-label="breadcrumb">
+                    <ul class="breadcrumb blog-breadcrumb">
+                        <li class="breadcrumb-item blog-breadcrumb-item"><a href=""><i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item blog-breadcrumb-item">Haqqımızda</li>
+                    </ul>
+                </nav>
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="blog-title">Haqqımızda</h1>
+                    </div>
+                </div>
+                <div class="contenhr"></div>
+                <div class="info-watch row">
+                    <div class="col-sm-12">
+                        <div class="info_box">
+                            <center style="box-sizing: border-box;"><br></center>
+                            <p></p>
+                            <p style="box-sizing: border-box; margin: 0px 0px 9px; text-align: justify;">@layoutService.getSettingDatas().InfoTxt1<br style="box-sizing: border-box;"></p>
+                            <p></p>
+                            <center style="box-sizing: border-box;"><br></center>
+                            <p></p>
+                            <p style="box-sizing: border-box; margin: 0px 0px 9px; text-align: justify;">@layoutService.getSettingDatas().InfoTxt2<br style="box-sizing: border-box;"></p>
+                            <p></p>
+                            <center style="box-sizing: border-box;"><br></center>
+                            <p></p>
+                            <p style="box-sizing: border-box; margin: 0px 0px 9px; text-align: justify;">@layoutService.getSettingDatas().InfoTxt3</p><p></p><center style="box-sizing: border-box;"><br></center>
+                            <p></p>
+                            <p style="box-sizing: border-box; margin: 0px 0px 9px; text-align: justify;"><br style="box-sizing: border-box;"></p>
+                            <div>
+                                 <iframe class="videoframesaat" src="https://www.youtube.com/embed/KXSV8nAFL5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>

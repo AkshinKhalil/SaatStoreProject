@@ -1,0 +1,44 @@
+﻿@model Blog
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section id="blog-details">
+            <div class="container">
+                <nav aria-label="breadcrumb">
+                    <ul class="breadcrumb blog-breadcrumb">
+                        <li class="breadcrumb-item blog-breadcrumb-item">
+                            <a asp-controller="home" asp-action="index"><i class="fa fa-home"></i></a></li>
+                        <li class="breadcrumb-item blog-breadcrumb-item">
+                            <a asp-controller="blog" asp-action="index">Xəbərlər</a>
+                        </li>
+                        <li class="breadcrumb-item us-breadcrumb-item">@Model.Name</li>
+                    </ul>
+                </nav>
+
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="blog-title">@Model.Name</h1>
+                    </div>
+                </div>
+                <div class="contenthr"></div>
+                <div class="row blog-detail-all">
+                    <div class="col-md-12 ">
+                        <div class="blog_content p-15">
+                            <div class="blog_text" style="font-size: 20px;">
+                                <p><b>@Model.Name</b></p>
+                                <p>@Model.Description</p>
+                                <div><br></div>
+                            </div>
+                            <div class="blog-date">
+                                <div class="d-md-flex">
+                                    <div class="blogdateitem d-flex align-items-center">
+                                        <i class="far fa-calendar-alt"></i><span>@Model.StartDate.ToShortDateString() </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
